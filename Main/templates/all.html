@@ -1,0 +1,19 @@
+<h1>Reddit Emerald</h1>
+{% if a_user %}
+    <b>Hello, {{ a_user.username }}!</b>
+    <a href="/logout">Logout</a>
+{% else %}
+    <a href="/login/">Login</a>
+{% endif %}
+
+<!-- Search bar would go here followed by filters beneath it -->
+
+{% for p in posts %}
+    <h3> <b> <a href="/post/{{ p.id }}/"> {{ p.title }} </a> </b> </h3>
+    <p> {{ p.user_posted.username }} </p>
+    <p><a href="/r/{{ p.sub.name }}/"> {{ p.sub.name }} </a></p>
+    <p> {{ p.content }} </p>
+    <a href="/upvote/post/{{ p.id }}/">Upvote</a>
+    <a href="/downvote/post/{{ p.id }}/">Downvote</a>
+{% endfor %}
+    
