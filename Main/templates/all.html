@@ -10,6 +10,7 @@
 
 {% for p in posts %}
     <h3> <b> <a href="/post/{{ p.id }}/"> {{ p.title }} </a> </b> </h3>
+    <p>{{ p.votes }}</p>
     <p> {{ p.user_posted.username }} </p>
     <p><a href="/r/{{ p.sub.name }}/"> {{ p.sub.name }} </a></p>
     <p> {{ p.content }} </p>
