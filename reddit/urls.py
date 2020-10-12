@@ -16,7 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.decorators import login_required
-from authentication.views import loginView, logoutView, registerView
+from Authentication.views import loginView, logoutView, registerView
+from Main.views import indexView
 
 urlpatterns = [
     path('', login_required(indexView.as_view()), name="homepage"),
