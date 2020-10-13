@@ -21,8 +21,8 @@ from Main.views import indexView
 
 urlpatterns = [
     path('', login_required(indexView.as_view()), name="homepage"),
-    path('login/', loginView.as_view()),
-    path('logout/', login_required(logoutView.as_view())),
-    path('register/', registerView.as_view()),
+    path('accounts/login/', loginView.as_view()),
+    path('accounts/logout/', login_required(logoutView.as_view())),
+    path('accounts/register/', registerView.as_view()),
     path('admin/', admin.site.urls),
 ]

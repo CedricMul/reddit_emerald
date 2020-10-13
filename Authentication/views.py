@@ -10,7 +10,9 @@ class loginView(View):
 
     def get(self, request):
         form = self.form_class()
-        return render(request, "generic_form.html", {"form": form})
+        if not request.user.is_authenticated:
+            registration = 'Create an account'
+        return render(request, "generic_form.html", {"form": form, "registration": registration})
 
     def post(self, request):
         form = self.form_class(request.POST)
