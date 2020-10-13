@@ -1,6 +1,6 @@
 <h1>Reddit Emerald</h1>
-{% if a_user %}
-    <b>Hello, {{ a_user.username }}!</b>
+{% if request.user.is_authenticated %}
+    <b>Hello, {{ request.user.username }}!</b>
     <a href="/logout">Logout</a>
 {% else %}
     <a href="/login/">Login</a>
