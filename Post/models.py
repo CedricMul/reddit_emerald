@@ -11,10 +11,6 @@ class RedditPost(models.Model):
         on_delete=models.CASCADE,
         related_name='post_user'
         )
-    sub = models.ForeignKey(
-        Subreddit,
-        on_delete=models.CASCADE
-    )
     votes = models.IntegerField(default=0)
 
 class Comment(models.Model):
