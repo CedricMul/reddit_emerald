@@ -1,3 +1,4 @@
+
 from django.views.generic.base import TemplateView
 from django.views.generic import DetailView
 
