@@ -16,6 +16,7 @@ class IndexView(View):
         user_subs = RedditPost.objects.filter(id__in=[sub.id for sub in user_subscriptions])
         return render(request, "all.html", {"posts": user_subs})
 
+#r/all/
 class AllView(View):
     def get(self, request):
         posts = RedditPost.objects.all().order_by('-votes')
@@ -29,6 +30,12 @@ def filter_view(request, sub, sub_filter):
     }
     posts = filter_dict[sub_filter]
     return render(request, 'all.html', {'posts': posts})
+
+def search_view(request, search):
+    if Subreddit.objects.get(name=search):
+        HttpResponseRedirect('/r/{}'.format(search))
+    else:
+        HttpResponseRedirect(reverse('homepage'))
 
 def subreddit_view(request, sub):
     posts = RedditPost.objects.filter(subreddit_parent=sub).order_by('-votes')
