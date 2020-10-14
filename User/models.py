@@ -4,13 +4,13 @@ from django.contrib.auth.models import AbstractUser
 from Main.models import Subreddit
 
 class RedditUser(AbstractUser):
+    DisplayName = models.CharField(max_length=25, default='self')
     subscriptions = models.ManyToManyField(
         Subreddit,
         related_name='subscriptions'
         )
-    mod_permissions = models.ManyToManyField(
+    subreddits_moderated = models.ManyToManyField(
         Subreddit,
-        related_name='mod_permissions'
+        related_name='subreddits_moderated',
+        blank=True
     )
-
-
