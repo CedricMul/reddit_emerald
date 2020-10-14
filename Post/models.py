@@ -1,7 +1,7 @@
 from django.db import models
 
-from Main.models import Subreddit
 from User.models import RedditUser
+from Main.models import Subreddit
 
 class RedditPost(models.Model):
     title = models.CharField(max_length=80)
@@ -11,7 +11,17 @@ class RedditPost(models.Model):
         on_delete=models.CASCADE,
         related_name='post_user'
         )
+    subreddit_parent = models.ForeignKey(
+        Subreddit,
+        on_delete=models.CASCADE,
+        related_name='subreddit_parent',
+        null=True,
+        blank=True
+    )
     votes = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.title
 
 class Comment(models.Model):
     content = models.TextField()
@@ -32,3 +42,6 @@ class Comment(models.Model):
         related_name='op'
     )
     votes = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.content
