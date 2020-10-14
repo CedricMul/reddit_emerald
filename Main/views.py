@@ -8,18 +8,31 @@ from Post.models import RedditPost
 from User.models import RedditUser
 from Main.forms import SubredditForm
 
-class indexView(View):
+class IndexView(View):
     def get(self, request):
         if not request.user.is_authenticated:
-            return render(request, "all.html", {"subreddits": RedditPost.objects.all().order_by('votes')})
+            return render(request, "all.html", {"posts": RedditPost.objects.all().order_by('votes')})
         user_subscriptions = request.user.subscriptions.all()
         user_subs = RedditPost.objects.filter(id__in=[sub.id for sub in user_subscriptions])
-        return render(request, "all.html", {"subreddits": user_subs})
+        return render(request, "all.html", {"posts": user_subs})
 
-class SubredditView(DetailView):
+class AllView(View):
     def get(self, request):
-        posts = RedditPost.objects.filter(subreddit_parent=sub).order_by('-votes')
-        return(request, 'all.html', {'posts': posts})
+        posts = RedditPost.objects.all().order_by('-votes')
+        return render(request, 'all.html', {'posts': posts})
+
+def filter_view(request, sub, sub_filter):
+    filter_dict = {
+        #'recent': RedditPost.objects.filter(subreddit_parent=sub).order_by('-date_and_time'),
+        'popular': RedditPost.objects.filter(subreddit_parent=sub).order_by('-votes'),
+        'least_popular': RedditPost.objects.filter(subreddit_parent=sub).order_by('votes'),
+    }
+    posts = filter_dict[sub_filter]
+    return render(request, 'all.html', {'posts': posts})
+
+def subreddit_view(request, sub):
+    posts = RedditPost.objects.filter(subreddit_parent=sub).order_by('-votes')
+    return(request, 'all.html', {'posts': posts})
 
 class SubredditFormView(TemplateView):
     def get(self, request):
