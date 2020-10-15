@@ -20,6 +20,8 @@ class RedditPost(models.Model):
     )
     votes = models.IntegerField(default=0)
 
+    dt_time = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return self.title
 
@@ -42,6 +44,8 @@ class Comment(models.Model):
         related_name='op'
     )
     votes = models.IntegerField(default=0)
+
+    dt_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.content
