@@ -1,0 +1,16 @@
+<h1>{{ post.subreddit_parent }}</h1>
+<h3><b>{{ post.title }}</b></h3> <p>by {{post.user_posted.username }}</p>
+
+<p>{{ post.content }}</p>
+{% for c in comments %}
+    {{ c.user_commented }}
+    {{ c.content }}
+    {{ c.votes }}
+    {{ c.dt_time }}
+    <!-- {% for r in replies %}
+        {% if c in r.replied_to %}
+            <b>{{ r.user_commented }}</b>
+            {{ r.content }}
+        {% endif %}
+    {% endfor %} -->
+{% endfor %}
