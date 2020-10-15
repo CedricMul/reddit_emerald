@@ -1,7 +1,7 @@
 from django.shortcuts import render, reverse, HttpResponseRedirect
 from django.views import View
 
-from Post.models import RedditPost
+from Post.models import RedditPost, Comment
 
 from User.models import RedditUser
 
@@ -11,17 +11,20 @@ def upvote_view(request, post_id):
     post = RedditPost.objects.get(id=post_id)
     post.votes += 1
     post.save()
-    return HttpResponseRedirect(reverse('homepage'))
+    return HttpResponseRedirect(request.GET.next)
 
 def downvote_view(request, post_id):
     post = RedditPost.objects.get(id=post_id)
     post.votes -= 1
     post.save()
-    return HttpResponseRedirect(reverse('homepage'))
+    return HttpResponseRedirect(request.GET.next)
 
-##
-
-def user_view(request, username):
-    user_id = RedditUser.objects.get(username=username).id
-    user = RedditUser.objects.filter(id=user_id).first()
-    return render(request, 'user.html', {'user': user})
+def post_detail_view(request, post_id):
+    post = RedditPost.objects.get(id=post_id)
+    comments = Comment.objects.filter(on_post=post_id).filter(replied_to__isnull=True)
+    replies = Comment.objects.all()
+    return render(request, 'post_detail.html', {
+        'post': post,
+        'comments': comments,
+        'replies': replies
+    })
