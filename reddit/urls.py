@@ -20,7 +20,7 @@ from Authentication.views import loginView, logoutView, registerView
 from Main.views import indexView
 
 urlpatterns = [
-    path('', login_required(indexView.as_view()), name="homepage"),
+    path('', indexView.as_view(), name="homepage"),
     path('accounts/login/', loginView.as_view()),
     path('accounts/logout/', login_required(logoutView.as_view())),
     path('accounts/register/', registerView.as_view()),
