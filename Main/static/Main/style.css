@@ -46,7 +46,7 @@
 *::before,
 *::after {
   box-sizing: border-box; }
-
+  
 html {
   font-family: sans-serif;
   line-height: 1.15;
@@ -5706,3 +5706,8 @@ br {
   .table .thead-dark th {
     color: inherit;
     border-color: #dee2e6; } }
+
+#vote-score {
+  text-align: center;
+  width: 10% !important;
+}
