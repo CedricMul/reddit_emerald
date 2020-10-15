@@ -17,10 +17,10 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 from Authentication.views import loginView, logoutView, registerView
-from Main.views import indexView
+from Main.views import IndexView
 
 urlpatterns = [
-    path('', indexView.as_view(), name="homepage"),
+    path('', IndexView.as_view(), name="homepage"),
     path('accounts/login/', loginView.as_view()),
     path('accounts/logout/', login_required(logoutView.as_view())),
     path('accounts/register/', registerView.as_view()),
