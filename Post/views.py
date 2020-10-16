@@ -11,13 +11,15 @@ def upvote_view(request, post_id):
     post = RedditPost.objects.get(id=post_id)
     post.votes += 1
     post.save()
-    return HttpResponseRedirect(request.GET.next)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def downvote_view(request, post_id):
     post = RedditPost.objects.get(id=post_id)
     post.votes -= 1
     post.save()
-    return HttpResponseRedirect(request.GET.next)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+##
 
 def post_detail_view(request, post_id):
     post = RedditPost.objects.get(id=post_id)
