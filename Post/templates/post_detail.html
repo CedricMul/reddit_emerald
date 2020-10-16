@@ -1,16 +1,34 @@
-<h1>{{ post.subreddit_parent }}</h1>
-<h3><b>{{ post.title }}</b></h3> <p>by {{post.user_posted.username }}</p>
+<h1><a href="/r/all/"> Reddit Emerald </a></h1>
+<div>
+{% if user.is_authenticated %}
+    <b>Hello, {{ user }}!</b>
+    <br>
+    <a href="/accounts/logout/">Logout</a>
+{% else %}
+    <a href="/accounts/login/">Login</a>
+{% endif %}
+</div>
+
+<h1><a href="/r/{{ post.subreddit_parent.name }}/">{{ post.subreddit_parent }}</a></h1>
+<h3><b>{{ post.title }}</b></h3> 
+<p>by <a href="/u/{{ post.user_posted.displayname }}/">{{ post.user_posted.displayname }}</a></p>
 
 <p>{{ post.content }}</p>
+<br>
+<p>
+    <a href="/upvote/post/{{ post.id }}/">Upvote</a>
+    <a href="/downvote/post/{{ post.id }}/">Downvote</a>
+    {{ post.votes }}
+</p>
+<br>
 {% for c in comments %}
-    {{ c.user_commented }}
-    {{ c.content }}
-    {{ c.votes }}
-    {{ c.dt_time }}
-    <!-- {% for r in replies %}
-        {% if c in r.replied_to %}
-            <b>{{ r.user_commented }}</b>
-            {{ r.content }}
-        {% endif %}
-    {% endfor %} -->
+    <p><b><a href="/u/{{ c.user_commented.displayname }}/">{{ c.user_commented }}</a></b></p>
+    <p>{{ c.content }}</p>
+    <p>
+        <a href="/upvote/comment/{{ c.id }}/">Upvote</a>
+        <a href="/downvote/comment/{{ c.id }}/">Downvote</a>
+        {{ c.votes }}
+    </p>
+    <p>{{ c.dt_time }}</p>
+    <p><a href="/comment_detail/{{ c.id }}/">View Discussion</a></p>
 {% endfor %}
