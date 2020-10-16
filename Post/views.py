@@ -42,8 +42,8 @@ def post_detail_view(request, post_id):
     })
 
 def comment_detail_view(request, comment_id):
-    comment = Comment.objects.filter(id=comment_id).first()
-    replies = Comment.objects.filter(id__id=[r.id for r in comment.replies])
+    comment = Comment.objects.filter(id=comment_id)
+    replies = Comment.objects.filter(in__replies=comment.replies)
     return render(request, 'comment_detail.html', {
         'comment': comment,
         'replies': replies
