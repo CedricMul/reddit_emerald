@@ -19,6 +19,14 @@ class RedditPost(models.Model):
         blank=True
     )
     votes = models.IntegerField(default=0)
+    users_voted = models.ManyToManyField(
+        RedditUser,
+        null=True,
+        blank=True,
+        related_name='user_voted'
+    )
+
+    dt_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
@@ -32,16 +40,24 @@ class Comment(models.Model):
     )
     on_post = models.ForeignKey(
         RedditPost,
-        on_delete=models.CASCADE
-    )
-    replied_to = models.ForeignKey(
-        to='Comment',
         on_delete=models.CASCADE,
+        null=True
+    )
+    replies = models.ManyToManyField(
+        to='Comment',
         null=True,
         blank=True,
-        related_name='op'
+        related_name='replied_comments'
     )
     votes = models.IntegerField(default=0)
+    users_voted = models.ManyToManyField(
+        RedditUser,
+        null=True,
+        blank=True,
+        related_name='users_voted'
+    )
+
+    dt_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.content
