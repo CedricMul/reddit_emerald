@@ -25,7 +25,7 @@ urlpatterns = [
     path('', IndexView.as_view(), name="homepage"),
     path('r/all/', AllView.as_view()),
     path('post/<int:post_id>/', pViews.post_detail_view),
-    path('comment_detail/<int:comment_id/', pViews.comment_detail_view),
+    path('comment_detail/<int:comment_id>/', pViews.comment_detail_view),
     path('r/<str:sub>/', subreddit_view),
     path('r/<str:sub>/subscribe/', subscribe_action_view),
     path('u/<str:username>/', user_view),
