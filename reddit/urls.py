@@ -18,15 +18,17 @@ from django.urls import path
 from django.contrib.auth.decorators import login_required
 from Authentication.views import loginView, logoutView, registerView
 from Main.views import IndexView, AllView, subreddit_view, subscribe_action_view
-from Post.views import upvote_view, downvote_view, post_detail_view
+from Post.views import upvote_view, downvote_view, post_detail_view, comment_detail_view
+from User.views import user_view
 
 urlpatterns = [
     path('', IndexView.as_view(), name="homepage"),
     path('r/all/', AllView.as_view()),
     path('post/<int:post_id>/', post_detail_view),
+    path('comment_detail/<int:comment_id/', comment_detail_view),
     path('r/<str:sub>/', subreddit_view),
     path('r/<str:sub>/subscribe/', subscribe_action_view),
-    #path('u/<str:username>/', user_view),
+    path('u/<str:username>/', user_view),
     path('upvote/post/<int:post_id>', login_required(upvote_view)),
     path('downvote/post/<int:post_id>', login_required(downvote_view)),
     path('accounts/login/', loginView.as_view()),

@@ -40,7 +40,8 @@ class Comment(models.Model):
     )
     on_post = models.ForeignKey(
         RedditPost,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        null=True
     )
     replies = models.ManyToManyField(
         to='Comment',
