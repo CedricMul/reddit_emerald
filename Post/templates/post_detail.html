@@ -1,3 +1,6 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'Main/style.css' %}">
+
 <h1><a href="/r/all/"> Reddit Emerald </a></h1>
 <div>
 {% if user.is_authenticated %}
@@ -9,26 +12,33 @@
 {% endif %}
 </div>
 
-<h1><a href="/r/{{ post.subreddit_parent.name }}/">{{ post.subreddit_parent }}</a></h1>
-<h3><b>{{ post.title }}</b></h3> 
-<p>by <a href="/u/{{ post.user_posted.displayname }}/">{{ post.user_posted.displayname }}</a></p>
+<div class="card border-primary">
+    <p class="card header border-primary" id="vote-score">{{ post.votes }}</p>
+<div class="card-body d-flex flex-column align-items-start">
+    <h4 class="card-title text-primary"><a href="/r/{{ post.subreddit_parent }}/"> r/{{ post.subreddit_parent }} </a>
+        | <a href="/u/{{ post.user_posted }}/"> {{ post.user_posted }} </a>
+    </h4>
+	<h4 class="card-title text-primary"><a href="/post/{{ post.id }}/"> {{ post.title }}</a></h4>
+	<p class="card-text">{{ post.content }}</p>
+	<a href="/upvote/post/{{ post.id }}/" class="btn btn-primary mt-auto">Upvote</a>
+    <br>
+    <a href="/downvote/post/{{ post.id }}/" class="btn btn-primary mt-auto">Downvote</a>
+</div>
+</div>
 
-<p>{{ post.content }}</p>
-<br>
-<p>
-    <a href="/upvote/post/{{ post.id }}/">Upvote</a>
-    <a href="/downvote/post/{{ post.id }}/">Downvote</a>
-    {{ post.votes }}
-</p>
-<br>
 {% for c in comments %}
-    <p><b><a href="/u/{{ c.user_commented.displayname }}/">{{ c.user_commented }}</a></b></p>
-    <p>{{ c.content }}</p>
-    <p>
-        <a href="/upvote/comment/{{ c.id }}/">Upvote</a>
-        <a href="/downvote/comment/{{ c.id }}/">Downvote</a>
-        {{ c.votes }}
-    </p>
-    <p>{{ c.dt_time }}</p>
-    <p><a href="/comment_detail/{{ c.id }}/">View Discussion</a></p>
+<br>
+    <div class="card border-primary">
+        <p class="card header border-primary" id="vote-score">{{ c.votes }}</p>
+        <div class="card-body d-flex flex-column align-items-start">
+            <h4><a href="/u/{{ p.user_commented.displayname }}/"> {{ c.user_commented }} </a> 
+                | {{ c.dt_time }}</h4>
+            <p class="card-text">{{ c.content }}</p>
+            <a href="/upvote/comment/{{ c.id }}/" class="btn btn-primary mt-auto">Upvote</a>
+            <br>
+            <a href="/downvote/comment/{{ c.id }}/" class="btn btn-primary mt-auto">Downvote</a>
+            <a href="/comment_detail/{{ c.id }}/">Comment Detail</a>
+            </div>
+    </div>
+
 {% endfor %}

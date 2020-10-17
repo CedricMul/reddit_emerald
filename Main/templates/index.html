@@ -6,6 +6,7 @@
 {% if user.is_authenticated %}
     <b>Hello, {{ user }}!</b>
     <br>
+    <h4><a href="/">My Subscriptions</a></h4>
     <a href="/accounts/logout/">Logout</a>
 {% else %}
     <a href="/accounts/login/">Login</a>
