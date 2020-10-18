@@ -1,5 +1,7 @@
 from django.db import models
 
+from mptt.models import MPTTModel, TreeForeignKey
+
 from User.models import RedditUser
 from Main.models import Subreddit
 
@@ -21,7 +23,6 @@ class RedditPost(models.Model):
     votes = models.IntegerField(default=0)
     users_voted = models.ManyToManyField(
         RedditUser,
-        null=True,
         blank=True,
         related_name='user_voted'
     )
@@ -31,7 +32,7 @@ class RedditPost(models.Model):
     def __str__(self):
         return self.title
 
-class Comment(models.Model):
+class Comment(MPTTModel):
     content = models.TextField()
     user_commented = models.ForeignKey(
         RedditUser,
@@ -43,16 +44,10 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         null=True
     )
-    replies = models.ManyToManyField(
-        to='Comment',
-        null=True,
-        blank=True,
-        related_name='replied_comments'
-    )
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, related_name='children')
     votes = models.IntegerField(default=0)
     users_voted = models.ManyToManyField(
         RedditUser,
-        null=True,
         blank=True,
         related_name='users_voted'
     )

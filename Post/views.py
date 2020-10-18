@@ -36,15 +36,7 @@ def downvote_comment_view(request, comment_id):
 def post_detail_view(request, post_id):
     post = RedditPost.objects.get(id=post_id)
     comments = Comment.objects.filter(on_post=post_id)
-    return render(request, 'post_detail.html', {
+    return render(request, 'post_detail.html',{
         'post': post,
         'comments': comments
     })
-
-def comment_detail_view(request, comment_id):
-    comment = Comment.objects.filter(id=comment_id)
-    replies = Comment.objects.filter(in__replies=comment.replies)
-    return render(request, 'comment_detail.html', {
-        'comment': comment,
-        'replies': replies
-        })

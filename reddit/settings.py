@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'User',
     'Post',
     'Authentication',
-    'Main'
+    'Main',
+    'mptt'
 ]
 
 MIDDLEWARE = [
