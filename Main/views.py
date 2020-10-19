@@ -55,10 +55,11 @@ def subreddit_view(request, sub):
         'subreddit': view_sub
     })
 
-class SubredditFormView(TemplateView):
+class SubredditFormView(View):
+
     def get(self, request):
         form = SubredditForm()
-        return render(request, 'form.html', {'form': form})
+        return render(request, "generic_form.html", {"form": form})
     
     def post(self, request):
         form = SubredditForm(request.POST)
@@ -66,6 +67,8 @@ class SubredditFormView(TemplateView):
             data = form.cleaned_data
             new_sub = Subreddit.objects.create(
                 name=data.get('name')
-            )
-            request.user.subreddits_moderated.add(new_sub).save()
-            return HttpResponseRedirect('/r/{}/'.format(new_sub))
+        )
+        currentUser = request.user
+        currentUser.subreddits_moderated.add(new_sub)
+        currentUser.save()
+        return HttpResponseRedirect('/r/{}/'.format(new_sub))

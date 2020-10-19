@@ -7,6 +7,7 @@ authors = ["Cedric Mulvihill <cedric.mulvihill@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 django = "^3.1.2"
+django-mptt = "^0.11.0"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^20.8b1", allow-prereleases = true}

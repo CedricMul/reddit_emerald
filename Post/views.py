@@ -40,3 +40,8 @@ def post_detail_view(request, post_id):
         'post': post,
         'comments': comments
     })
+
+class PostFormView(View):
+    def get(self, request):
+        form = SubredditForm()
+        return render(request, "generic_form.html", {"form": form})
