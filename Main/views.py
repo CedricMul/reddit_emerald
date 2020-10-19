@@ -71,4 +71,5 @@ class SubredditFormView(View):
         currentUser = request.user
         currentUser.subreddits_moderated.add(new_sub)
         currentUser.save()
-        return HttpResponseRedirect('/r/{}/'.format(new_sub))
+        redirect_url = '/r/' + new_sub.name + '/'
+        return HttpResponseRedirect(redirect_url)
