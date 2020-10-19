@@ -6,17 +6,14 @@
 {% if user.is_authenticated %}
     <b>Hello, {{ user }}!</b>
     <br>
-    <h4><a href="/">My Subscriptions</a></h4>
     <a href="/accounts/logout/">Logout</a>
+    <h2><a href="/">My Subscriptions</a></h2>
 {% else %}
     <a href="/accounts/login/">Login</a>
 {% endif %}
 </div>
 
-<!-- Search bar would go here followed by filters beneath it -->
-{% if subreddit %}
-    <h3><a href="subscribe/"> {{ subreddit }} </a></h3>
-{% endif %}
+<h2><a href="/AllSubreddits/">List of Subreddits</a></h2>
 <h3><a href="/AddSubreddit/">Create Subreddit</a></h3>
 <h3><a href="/AddPost/">Create Post</a></h3>
 {% for p in posts %}
