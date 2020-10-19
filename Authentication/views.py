@@ -1,4 +1,4 @@
-from django.shortcuts import render, reverse, HttpResponseRedirect
+from django.shortcuts import render, reverse, HttpResponseRedirect, HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.views import View
 from Authentication.forms import LoginForm, RegisterForm
@@ -23,6 +23,8 @@ class loginView(View):
             if user:
                 login(request, user)
                 return HttpResponseRedirect(request.GET.get("next", reverse("homepage")))
+            else:
+                return render(request, "user_not_found.html")
 
 
 class registerView(View):
