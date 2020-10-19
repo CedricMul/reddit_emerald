@@ -31,6 +31,10 @@ class AllView(View):
     def get(self, request):
         posts = RedditPost.objects.all().order_by('-votes')
         return render(request, 'index.html', {'posts': posts})
+    
+class AllSubreddits(View):
+    def get(self, request):
+        return render(request, 'allSubreddits.html', {'subreddits': Subreddit.objects.all()})
 
 def filter_view(request, sub, sub_filter):
     filter_dict = {
