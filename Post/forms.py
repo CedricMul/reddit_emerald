@@ -10,6 +10,7 @@ class PostForm(ModelForm):
         # ]
         exclude = [
             'user_posted',
+            'users_voted',
             'sub',
             'votes'
         ]
