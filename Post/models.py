@@ -7,7 +7,8 @@ from Main.models import Subreddit
 
 class RedditPost(models.Model):
     title = models.CharField(max_length=80)
-    content = models.TextField()
+    content = models.TextField(null=True, blank=True)
+    url = models.URLField(null=True, blank=True)
     user_posted = models.ForeignKey(
         RedditUser,
         on_delete=models.CASCADE,
