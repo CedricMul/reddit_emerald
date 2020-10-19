@@ -17,11 +17,14 @@
 {% if subreddit %}
     <h3><a href="subscribe/"> {{ subreddit }} </a></h3>
 {% endif %}
+<h3><a href="/AddSubreddit/">Create Subreddit</a></h3>
+<h3><a href="/AddPost/">Create Post</a></h3>
 {% for p in posts %}
 
 <div class="card border-primary">
     <p class="card header border-primary" id="vote-score">{{ p.votes }}</p>
 <div class="card-body d-flex flex-column align-items-start">
+    {% if is_mod %} <a href="/delete/post/{{ p.id }}/"> Mod Delete</a> {% endif %}
     <h4 class="card-title text-primary"><a href="/r/{{ p.subreddit_parent }}/"> r/{{ p.subreddit_parent }} </a>
         | <a href="/u/{{ p.user_posted }}/"> {{ p.user_posted }} </a>
     </h4>
