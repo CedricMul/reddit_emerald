@@ -60,3 +60,8 @@ class PostFormView(View):
         )
         redirect_url = '/post/' + str(new_post.id) + '/'
         return HttpResponseRedirect(redirect_url)
+
+def deletePost(request, post_id):
+    post = RedditPost.objects.get(id=post_id)
+    post.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
