@@ -44,6 +44,9 @@
             <br>
             <a href="/downvote/comment/{{ node.id }}/" class="btn btn-primary mt-auto">Downvote</a>
             <a href="/comment/{{ post.id }}/reply/{{ node.id }}/" class="btn btn-primary mt-auto">Reply</a>
+		{% if node.user_commented == request.user %}
+            <a href="/comment/delete/{{ node.id }}/" class="btn btn-primary mt-auto">Delete</a>
+            {% endif %}
             </div>
     </div>
             {% if not node.is_leaf_node %}
