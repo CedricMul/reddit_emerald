@@ -18,7 +18,8 @@
     <h4 class="card-title text-primary"><a href="/r/{{ post.subreddit_parent }}/"> r/{{ post.subreddit_parent }} </a>
         | <a href="/u/{{ post.user_posted }}/"> {{ post.user_posted }} </a>
     </h4>
-	<h4 class="card-title text-primary"><a href="/post/{{ post.id }}/"> {{ post.title }}</a></h4>
+    <h4 class="card-title text-primary"><a href="/post/{{ post.id }}/"> {{ post.title }}</a></h4>
+    <p class="card-text"><a href={{p.url}}>{{ p.url }}</a></p>
 	<p class="card-text">{{ post.content }}</p>
 	<a href="/upvote/post/{{ post.id }}/" class="btn btn-primary mt-auto">Upvote</a>
     <br>
