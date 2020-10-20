@@ -92,3 +92,8 @@ def comment_form_view(request, post_id, comment_type, on_id):
             return HttpResponseRedirect("/post/{}/".format(post_id))
     form = CommentForm()
     return render(request, 'generic_form.html', {'form': form})
+
+def delete_comment_view(request, comment_id):
+    comment = Comment.objects.get(id=comment_id)
+    comment.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
