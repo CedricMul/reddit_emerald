@@ -16,7 +16,6 @@ class IndexView(View):
             #return render(request, "index.html", {"posts": RedditPost.objects.all().order_by('votes')})
         user_subscriptions = request.user.subscriptions.all()
         user_subs = RedditPost.objects.filter(id__in=[sub.id for sub in user_subscriptions])
-        breakpoint()
         return render(request, "index.html", {"posts": user_subs})
 
 def subscribe_action_view(request, sub):
