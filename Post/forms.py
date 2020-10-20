@@ -4,10 +4,6 @@ from Post.models import RedditPost, Comment
 class PostForm(ModelForm):
     class Meta:
         model = RedditPost
-        # fields = [
-        #     'title',
-        #     'content'
-        # ]
         exclude = [
             'user_posted',
             'users_voted',

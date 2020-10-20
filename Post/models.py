@@ -8,7 +8,7 @@ from Main.models import Subreddit
 class RedditPost(models.Model):
     title = models.CharField(max_length=80)
     content = models.TextField(null=True, blank=True)
-    url = models.URLField(null=True, blank=True)
+    url = models.URLField(null=True, blank=True, verbose_name='Optional content url')
     user_posted = models.ForeignKey(
         RedditUser,
         on_delete=models.CASCADE,
@@ -20,7 +20,7 @@ class RedditPost(models.Model):
         related_name='subreddit_parent',
         null=True,
         blank=True,
-        verbose_name="Parent"
+        verbose_name="Under Subreddit"
     )
     votes = models.IntegerField(default=0)
     users_voted = models.ManyToManyField(
