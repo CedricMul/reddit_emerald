@@ -86,3 +86,12 @@ class SubredditFormView(View):
         currentUser.save()
         redirect_url = '/r/' + new_sub.name + '/'
         return HttpResponseRedirect(redirect_url)
+
+class ModeratorView(View):
+
+    def get(self, request, sub):
+        view_sub = Subreddit.objects.filter(name=sub).first()
+        all_users = RedditUser.objects.all()
+        moderators = RedditUser.objects.filter(subreddits_moderated=view_sub.id)
+
+        return render(request, "moderator_view.html", {"subreddit": view_sub, "moderators": moderators})
