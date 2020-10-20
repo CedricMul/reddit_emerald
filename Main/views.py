@@ -18,11 +18,15 @@ class IndexView(View):
         return render(request, "index.html", {"posts": user_subs})
 
 def subscribe_action_view(request, sub):
-    if not request.user.is_authenticated:
-        HttpResponseRedirect(request.GET.next)
     sub_subreddit = Subreddit.objects.filter(name=sub).first()
     current_user = request.user
     current_user.subscriptions.add(sub_subreddit.id)
+    return HttpResponseRedirect('/r/{}/'.format(sub))
+
+def unsubscribe_action_view(request, sub):
+    sub_subreddit = Subreddit.objects.filter(name=sub).first()
+    current_user = request.user
+    current_user.subscriptions.remove(sub_subreddit.id)
     return HttpResponseRedirect('/r/{}/'.format(sub))
 
 
@@ -54,9 +58,14 @@ def search_view(request, search):
 def subreddit_view(request, sub):
     view_sub = Subreddit.objects.filter(name=sub).first()
     posts = RedditPost.objects.filter(subreddit_parent=view_sub.id).order_by('-votes')
+    if request.user.subscriptions.filter(pk=view_sub.pk).exists():
+        follow_state = True
+    else:
+        follow_state = False
     return render(request, 'index.html', {
         'posts': posts,
-        'subreddit': view_sub
+        'subreddit': view_sub,
+        'state': follow_state
     })
 
 class SubredditFormView(View):
