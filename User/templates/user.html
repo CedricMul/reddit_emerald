@@ -1,1 +1,53 @@
-<h1>u/{{ user }}</h1>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'Main/style.css' %}">
+
+<h1><a href='/u/{{user}}/'>u/{{user}}</a> posts</h1>
+
+{% for p in posts %}
+
+<div class="card border-primary">
+    <p class="card header border-primary" id="vote-score">{{ p.votes }}</p>
+<div class="card-body d-flex flex-column align-items-start">
+    {% if p.subreddit_parent in request.user.subreddits_moderated.all %}
+        <a href="/delete/post/{{ p.id }}/"> Mod Delete</a>
+    {% endif %}
+    <h4 class="card-title text-primary"><a href="/r/{{ p.subreddit_parent }}/"> r/{{ p.subreddit_parent }} </a>
+        | <a href="/u/{{ p.user_posted }}/"> {{ p.user_posted }} </a>
+    </h4>
+	<h4 class="card-title text-primary"><a href="/post/{{ p.id }}/"> {{ p.title }}</a></h4>
+	<p class="card-text">{{ p.content }}</p>
+	<a href="/upvote/post/{{ p.id }}/" class="btn btn-primary mt-auto">Upvote</a>
+    <br>
+    <a href="/downvote/post/{{ p.id }}/" class="btn btn-primary mt-auto">Downvote</a>
+</div>
+</div>
+
+{% endfor %}
+
+<h1><a href='/u/{{user}}/'>u/{{user}}</a> comments</h1>
+
+<br>
+{% load mptt_tags %}
+<ul>
+{% recursetree comments %}
+    <li>
+    <div class="card border-primary">
+        <p class="card header border-primary" id="vote-score">{{ node.votes }}</p>
+        <div class="card-body d-flex flex-column align-items-start">
+            <h4><a href="/u/{{ node.user_commented.displayname }}/"> {{ node.user_commented }} </a> 
+                | {{ node.dt_time }}</h4>
+            <p class="card-text">{{ node.content }}</p>
+            <a href="/upvote/comment/{{ node.id }}/" class="btn btn-primary mt-auto">Upvote</a>
+            <br>
+            <a href="/downvote/comment/{{ node.id }}/" class="btn btn-primary mt-auto">Downvote</a>
+            <a href="/comment_detail/{{ node.id }}/">Comment Detail</a>
+            </div>
+    </div>
+            {% if not node.is_leaf_node %}
+                <ul class="children">
+                    {{ children }}
+                </ul>
+            {% endif %}
+    </li>
+{% endrecursetree %}
+</ul>
