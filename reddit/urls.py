@@ -32,6 +32,7 @@ urlpatterns = [
     path('AllSubreddits/', AllSubreddits.as_view()),
     path('AddSubreddit/', login_required(SubredditFormView.as_view())),
     path('AddPost/', login_required(pViews.PostFormView.as_view())),
+    path('delete/post/<int:post_id>/', login_required(pViews.deletePost)),
     path('upvote/post/<int:post_id>/', login_required(pViews.upvote_post_view)),
     path('downvote/post/<int:post_id>/', login_required(pViews.downvote_post_view)),
     path('upvote/comment/<int:comment_id>/', login_required(pViews.upvote_comment_view)),
