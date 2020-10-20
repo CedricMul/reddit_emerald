@@ -2,6 +2,7 @@ from django.shortcuts import render, reverse, HttpResponseRedirect
 from django.views import View
 from django.views.generic.base import TemplateView
 from django.views.generic import DetailView
+from django.db.models import Q
 
 from Main.models import Subreddit
 from Post.models import RedditPost
@@ -87,11 +88,25 @@ class SubredditFormView(View):
         redirect_url = '/r/' + new_sub.name + '/'
         return HttpResponseRedirect(redirect_url)
 
-class ModeratorView(View):
+def ModeratorView(request, sub):
+    view_sub = Subreddit.objects.filter(name=sub).first()
+    moderators = RedditUser.objects.filter(subreddits_moderated=view_sub.id)
+    not_moderators = RedditUser.objects.filter(~Q(subreddits_moderated=view_sub.id))
 
-    def get(self, request, sub):
-        view_sub = Subreddit.objects.filter(name=sub).first()
-        all_users = RedditUser.objects.all()
-        moderators = RedditUser.objects.filter(subreddits_moderated=view_sub.id)
+    return render(request, "moderator_view.html", {"subreddit": view_sub, "not_moderators": not_moderators, "moderators": moderators})
 
-        return render(request, "moderator_view.html", {"subreddit": view_sub, "moderators": moderators})
+def ModeratorAdd(request, sub):
+    user = request.POST.get('users')
+    new_moderator = RedditUser.objects.get(username=user)
+    view_sub = Subreddit.objects.filter(name=sub).first()
+    new_moderator.subreddits_moderated.add(view_sub)
+    new_moderator.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+def ModeratorDelete(request, sub):
+    user = request.POST.get('users')
+    new_moderator = RedditUser.objects.get(username=user)
+    view_sub = Subreddit.objects.filter(name=sub).first()
+    new_moderator.subreddits_moderated.remove(view_sub)
+    new_moderator.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
