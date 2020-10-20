@@ -6,25 +6,34 @@
 {% if user.is_authenticated %}
     <b>Hello, {{ user }}!</b>
     <br>
-    <h4><a href="/">My Subscriptions</a></h4>
     <a href="/accounts/logout/">Logout</a>
+    <h2><a href="/">My Subscriptions</a></h2>
 {% else %}
     <a href="/accounts/login/">Login</a>
 {% endif %}
 </div>
 
-<!-- Search bar would go here followed by filters beneath it -->
-{% if subreddit %}
-    <h3><a href="subscribe/"> {{ subreddit }} </a></h3>
-{% endif %}
+<h2><a href="/AllSubreddits/">List of Subreddits</a></h2>
 <h3><a href="/AddSubreddit/">Create Subreddit</a></h3>
 <h3><a href="/AddPost/">Create Post</a></h3>
+{% if subreddit %}
+    <h1>{{subreddit}} 
+        {% if state == False %}
+            | <a href="/r/{{subreddit}}/subscribe/">Subscribe</a>
+        {% else %}
+            | <a href="/r/{{subreddit}}/unsubscribe/">Unsubscribe</a>
+        {% endif %}
+    </h1>
+    <h3><a href="/r/{{subreddit}}/moderators/">View Moderators</a></h3>
+{% endif %}
 {% for p in posts %}
 
 <div class="card border-primary">
     <p class="card header border-primary" id="vote-score">{{ p.votes }}</p>
 <div class="card-body d-flex flex-column align-items-start">
-    {% if is_mod %} <a href="/delete/post/{{ p.id }}/"> Mod Delete</a> {% endif %}
+    {% if p.subreddit_parent in request.user.subreddits_moderated.all %}
+        <a href="/delete/post/{{ p.id }}/"> Mod Delete</a>
+    {% endif %}
     <h4 class="card-title text-primary"><a href="/r/{{ p.subreddit_parent }}/"> r/{{ p.subreddit_parent }} </a>
         | <a href="/u/{{ p.user_posted }}/"> {{ p.user_posted }} </a>
     </h4>

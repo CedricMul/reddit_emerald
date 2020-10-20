@@ -1,0 +1,9 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'Main/style.css' %}">
+
+{% for sub in subreddits %}
+
+<h2><a href="/r/{{sub.name}}/">{{sub.name}}</a></h2>
+
+
+{% endfor %}

@@ -2,6 +2,7 @@ from django.shortcuts import render, reverse, HttpResponseRedirect
 from django.views import View
 
 from Post.models import RedditPost, Comment
+from Post.forms import PostForm
 
 from User.models import RedditUser
 
@@ -43,5 +44,24 @@ def post_detail_view(request, post_id):
 
 class PostFormView(View):
     def get(self, request):
-        form = SubredditForm()
+        form = PostForm()
         return render(request, "generic_form.html", {"form": form})
+    
+    def post(self, request):
+        form = PostForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            new_post = RedditPost.objects.create(
+                title=data.get('title'),
+                content=data.get('content'),
+                url=data.get('url'),
+                subreddit_parent=data.get('subreddit_parent'),
+                user_posted=request.user
+        )
+        redirect_url = '/post/' + str(new_post.id) + '/'
+        return HttpResponseRedirect(redirect_url)
+
+def deletePost(request, post_id):
+    post = RedditPost.objects.get(id=post_id)
+    post.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

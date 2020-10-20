@@ -19,7 +19,8 @@ class RedditPost(models.Model):
         on_delete=models.CASCADE,
         related_name='subreddit_parent',
         null=True,
-        blank=True
+        blank=True,
+        verbose_name="Parent"
     )
     votes = models.IntegerField(default=0)
     users_voted = models.ManyToManyField(
