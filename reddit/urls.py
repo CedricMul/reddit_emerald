@@ -33,6 +33,7 @@ urlpatterns = [
     path('AddSubreddit/', login_required(SubredditFormView.as_view())),
     path('AddPost/<int:sub_id>/', pViews.post_form_view),
     path('comment/<int:post_id>/<str:comment_type>/<int:on_id>/', pViews.comment_form_view),
+    path('comment/delete/<int:comment_id>/', pViews.delete_comment_view),
     path('delete/post/<int:post_id>/', login_required(pViews.deletePost)),
     path('r/<str:sub>/moderators/', login_required(ModeratorView)),
     path('r/<str:sub>/moderators/add',login_required(ModeratorAdd)),
