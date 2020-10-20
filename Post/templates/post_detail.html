@@ -23,6 +23,8 @@
 	<a href="/upvote/post/{{ post.id }}/" class="btn btn-primary mt-auto">Upvote</a>
     <br>
     <a href="/downvote/post/{{ post.id }}/" class="btn btn-primary mt-auto">Downvote</a>
+	<br>
+	<a href="/comment/{{ post.id }}/top_level/{{ post.id }}/" class="btn btn-primary mt-auto">Comment</a>
 </div>
 </div>
 
@@ -40,7 +42,7 @@
             <a href="/upvote/comment/{{ node.id }}/" class="btn btn-primary mt-auto">Upvote</a>
             <br>
             <a href="/downvote/comment/{{ node.id }}/" class="btn btn-primary mt-auto">Downvote</a>
-            <a href="/comment_detail/{{ node.id }}/">Comment Detail</a>
+            <a href="/comment/{{ post.id }}/reply/{{ node.id }}/" class="btn btn-primary mt-auto">Reply</a>
             </div>
     </div>
             {% if not node.is_leaf_node %}
