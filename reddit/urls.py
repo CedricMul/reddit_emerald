@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 from Authentication.views import loginView, logoutView, registerView
-from Main.views import IndexView, AllView, subreddit_view, subscribe_action_view, unsubscribe_action_view, SubredditFormView, AllSubreddits, ModeratorView
+from Main.views import IndexView, AllView, subreddit_view, subscribe_action_view, unsubscribe_action_view, SubredditFormView, AllSubreddits, ModeratorView, ModeratorAdd, ModeratorDelete
 from Post import views as pViews
 from User.views import user_view
 
@@ -33,7 +33,9 @@ urlpatterns = [
     path('AddSubreddit/', login_required(SubredditFormView.as_view())),
     path('AddPost/', login_required(pViews.PostFormView.as_view())),
     path('delete/post/<int:post_id>/', login_required(pViews.deletePost)),
-    path('r/<str:sub>/moderators/', login_required(ModeratorView.as_view())),
+    path('r/<str:sub>/moderators/', login_required(ModeratorView)),
+    path('r/<str:sub>/moderators/add',login_required(ModeratorAdd)),
+    path('r/<str:sub>/moderators/remove',login_required(ModeratorDelete)),
     path('upvote/post/<int:post_id>/', login_required(pViews.upvote_post_view)),
     path('downvote/post/<int:post_id>/', login_required(pViews.downvote_post_view)),
     path('upvote/comment/<int:comment_id>/', login_required(pViews.upvote_comment_view)),
