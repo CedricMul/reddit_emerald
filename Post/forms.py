@@ -12,7 +12,8 @@ class PostForm(ModelForm):
             'user_posted',
             'users_voted',
             'sub',
-            'votes'
+            'votes',
+            'dt_time'
         ]
 
 class CommentForm(ModelForm):
@@ -22,5 +23,6 @@ class CommentForm(ModelForm):
             'user_commented',
             'on_post',
             'replied_to',
-            'votes'
+            'votes',
+            'dt_time'
         ]
