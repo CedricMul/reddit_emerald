@@ -16,6 +16,15 @@
 <h2><a href="/AllSubreddits/">List of Subreddits</a></h2>
 <h3><a href="/AddSubreddit/">Create Subreddit</a></h3>
 <h3><a href="/AddPost/">Create Post</a></h3>
+{% if subreddit %}
+    <h1>{{subreddit}} 
+        {% if state == False %}
+            | <a href="/r/{{subreddit}}/subscribe/">Subscribe</a>
+        {% else %}
+            | <a href="/r/{{subreddit}}/unsubscribe/">Unsubscribe</a>
+        {% endif %}
+    </h1>
+{% endif %}
 {% for p in posts %}
 
 <div class="card border-primary">
