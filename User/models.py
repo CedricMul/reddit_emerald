@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from Main.models import Subreddit
 
 class RedditUser(AbstractUser):
-    DisplayName = models.CharField(max_length=25, default='self')
+    DisplayName = models.CharField(max_length=25, default='self', verbose_name='Name')
     subscriptions = models.ManyToManyField(
         Subreddit,
         related_name='subscriptions',
