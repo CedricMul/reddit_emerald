@@ -10,28 +10,36 @@ from User.models import RedditUser
 
 def upvote_post_view(request, post_id):
     post = RedditPost.objects.get(id=post_id)
-    post.votes += 1
-    post.save()
+    if not request.user in post.users_voted.all():
+        post.votes += 1
+        post.users_voted.add(request.user)
+        post.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def downvote_post_view(request, post_id):
     post = RedditPost.objects.get(id=post_id)
-    post.votes -= 1
-    post.save()
+    if not request.user in post.users_voted.all():
+        post.votes -= 1
+        post.users_voted.add(request.user)
+        post.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 ##
 
 def upvote_comment_view(request, comment_id):
     c = Comment.objects.get(id=comment_id)
-    c.votes += 1
-    c.save()
+    if not request.user in c.users_voted.all():
+        c.votes += 1
+        c.users_voted.add(request.user)
+        c.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def downvote_comment_view(request, comment_id):
     c = Comment.objects.get(id=comment_id)
-    c.votes -= 1
-    c.save()
+    if not request.user in c.users_voted.all():
+        c.votes -= 1
+        c.users_voted.add(request.user)
+        c.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def post_detail_view(request, post_id):
@@ -42,12 +50,8 @@ def post_detail_view(request, post_id):
         'comments': comments
     })
 
-class PostFormView(View):
-    def get(self, request):
-        form = PostForm()
-        return render(request, "generic_form.html", {"form": form})
-    
-    def post(self, request):
+def post_form_view(request, sub_id):
+    if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
@@ -55,13 +59,31 @@ class PostFormView(View):
                 title=data.get('title'),
                 content=data.get('content'),
                 url=data.get('url'),
-                subreddit_parent=data.get('subreddit_parent'),
-                user_posted=request.user
-        )
-        redirect_url = '/post/' + str(new_post.id) + '/'
-        return HttpResponseRedirect(redirect_url)
+                user_posted=request.user,
+                subreddit_parent=Subreddit.objects.get(id=sub_id)
+            )
+            return HttpResponseRedirect("/post/{}/".format(new_post.id))
+    form = PostForm()
+    return render(request, 'generic_form.html', {'form': form})
 
-def deletePost(request, post_id):
-    post = RedditPost.objects.get(id=post_id)
-    post.delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+def comment_form_view(request, post_id, comment_type, on_id):
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            if comment_type == 'reply':
+                Comment.objects.create(
+                    content=data.get('content'),
+                    user_commented=request.user,
+                    parent=Comment.objects.get(id=on_id),
+                    on_post=RedditPost.objects.get(id=post_id)
+                )
+            elif comment_type == 'top_level':
+                Comment.objects.create(
+                    content=data.get('content'),
+                    user_commented=request.user,
+                    on_post=RedditPost.objects.get(id=on_id)
+                )
+            return HttpResponseRedirect("/post/{}/".format(post_id))
+    form = CommentForm()
+    return render(request, 'generic_form.html', {'form': form})
