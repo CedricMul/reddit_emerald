@@ -50,6 +50,11 @@ def post_detail_view(request, post_id):
         'comments': comments
     })
 
+def deletePost(request, post_id):
+    post = RedditPost.objects.get(id=post_id)
+    post.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/')) 
+
 def post_form_view(request, sub_id):
     if request.method == 'POST':
         form = PostForm(request.POST)
