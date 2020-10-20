@@ -1,6 +1,36 @@
-<h1>r/{{subreddit}} moderators</h1>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'Main/style.css' %}">
+
+<h1><a href="/r/{{subreddit}}/">r/{{subreddit}} moderators</a></h1>
+
+{% if request.user in moderators or request.user.is_superuser %}
+    <form action="/r/{{subreddit}}/moderators/add" method="POST">
+        {% csrf_token %}
+        <label for="users">New Moderator: </label>
+        <select id="users" name="users">
+            {% for user in not_moderators %}
+            <option value={{user}}>{{user}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit">
+    </form>
+{% endif %}
+
+{% if request.user.is_superuser %}
+    <form action="/r/{{subreddit}}/moderators/remove" method="POST">
+        {% csrf_token %}
+        <label for="users">Remove Moderator: </label>
+        <select id="users" name="users">
+            {% for user in moderators %}
+            <option value={{user}}>{{user}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit">
+    </form>
+{% endif %}
+
 {% for moderator in moderators %}
-<ul>
-<div><a href="/u/{{moderator}}/">{{moderator}}</a></div>
-</ul>
+    <ul>
+    <div><a href="/u/{{moderator}}/">{{moderator}}</a></div>
+    </ul>
 {% endfor %}
