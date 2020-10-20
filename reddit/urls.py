@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 from Authentication.views import loginView, logoutView, registerView
-from Main.views import IndexView, AllView, subreddit_view, subscribe_action_view, SubredditFormView, AllSubreddits
+from Main.views import IndexView, AllView, subreddit_view, subscribe_action_view, unsubscribe_action_view, SubredditFormView, AllSubreddits
 from Post import views as pViews
 from User.views import user_view
 
@@ -26,7 +26,8 @@ urlpatterns = [
     path('r/all/', AllView.as_view()),
     path('post/<int:post_id>/', pViews.post_detail_view),
     path('r/<str:sub>/', subreddit_view),
-    path('r/<str:sub>/subscribe/', subscribe_action_view),
+    path('r/<str:sub>/subscribe/', login_required(subscribe_action_view)),
+    path('r/<str:sub>/unsubscribe/', login_required(unsubscribe_action_view)),
     path('u/<str:username>/', user_view),
     path('AllSubreddits/', AllSubreddits.as_view()),
     path('AddSubreddit/', login_required(SubredditFormView.as_view())),
