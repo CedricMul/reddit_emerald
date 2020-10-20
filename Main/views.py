@@ -16,6 +16,7 @@ class IndexView(View):
             #return render(request, "index.html", {"posts": RedditPost.objects.all().order_by('votes')})
         user_subscriptions = request.user.subscriptions.all()
         user_subs = RedditPost.objects.filter(id__in=[sub.id for sub in user_subscriptions])
+        breakpoint()
         return render(request, "index.html", {"posts": user_subs})
 
 def subscribe_action_view(request, sub):
@@ -96,17 +97,19 @@ def ModeratorView(request, sub):
     return render(request, "moderator_view.html", {"subreddit": view_sub, "not_moderators": not_moderators, "moderators": moderators})
 
 def ModeratorAdd(request, sub):
-    user = request.POST.get('users')
-    new_moderator = RedditUser.objects.get(username=user)
-    view_sub = Subreddit.objects.filter(name=sub).first()
-    new_moderator.subreddits_moderated.add(view_sub)
-    new_moderator.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    if request.method == "POST":
+        user = request.POST.get('users')
+        new_moderator = RedditUser.objects.get(username=user)
+        view_sub = Subreddit.objects.filter(name=sub).first()
+        new_moderator.subreddits_moderated.add(view_sub)
+        new_moderator.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def ModeratorDelete(request, sub):
-    user = request.POST.get('users')
-    new_moderator = RedditUser.objects.get(username=user)
-    view_sub = Subreddit.objects.filter(name=sub).first()
-    new_moderator.subreddits_moderated.remove(view_sub)
-    new_moderator.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    if request.method == "POST":
+        user = request.POST.get('users')
+        new_moderator = RedditUser.objects.get(username=user)
+        view_sub = Subreddit.objects.filter(name=sub).first()
+        new_moderator.subreddits_moderated.remove(view_sub)
+        new_moderator.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
