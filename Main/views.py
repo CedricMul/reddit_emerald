@@ -15,19 +15,21 @@ class IndexView(View):
             return HttpResponseRedirect('/r/all/')
             #return render(request, "index.html", {"posts": RedditPost.objects.all().order_by('votes')})
         user_subscriptions = request.user.subscriptions.all()
-        user_subs = RedditPost.objects.filter(id__in=[sub.id for sub in user_subscriptions])
+        user_subs = RedditPost.objects.filter(subreddit_parent__in=user_subscriptions)
         return render(request, "index.html", {"posts": user_subs})
 
 def subscribe_action_view(request, sub):
     sub_subreddit = Subreddit.objects.filter(name=sub).first()
     current_user = request.user
     current_user.subscriptions.add(sub_subreddit.id)
+    current_user.save()
     return HttpResponseRedirect('/r/{}/'.format(sub))
 
 def unsubscribe_action_view(request, sub):
     sub_subreddit = Subreddit.objects.filter(name=sub).first()
     current_user = request.user
     current_user.subscriptions.remove(sub_subreddit.id)
+    current_user.save()
     return HttpResponseRedirect('/r/{}/'.format(sub))
 
 

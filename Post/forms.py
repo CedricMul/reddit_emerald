@@ -20,5 +20,7 @@ class CommentForm(ModelForm):
             'on_post',
             'replied_to',
             'votes',
+            'parent',
+            'users_voted',
             'dt_time'
         ]
