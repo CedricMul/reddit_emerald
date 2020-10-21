@@ -2,8 +2,8 @@ from django.shortcuts import render, reverse, HttpResponseRedirect
 from django.views import View
 
 from Post.models import RedditPost, Comment
-from Post.forms import PostForm
-
+from Post.forms import PostForm, CommentForm
+from Main.models import Subreddit
 from User.models import RedditUser
 
 # Modified version of Ramon's views https://github.com/rhami223/reddit_emerald/blob/fd9ea13fc5f4775d5bfe6f52e72edd977d1ffc15/Post/views.py
@@ -44,16 +44,18 @@ def downvote_comment_view(request, comment_id):
 
 def post_detail_view(request, post_id):
     post = RedditPost.objects.get(id=post_id)
+    moderators = RedditUser.objects.filter(subreddits_moderated=post.subreddit_parent.id)
     comments = Comment.objects.filter(on_post=post_id)
     return render(request, 'post_detail.html',{
         'post': post,
-        'comments': comments
+        'comments': comments,
+        'moderators': moderators
     })
 
 def deletePost(request, post_id):
     post = RedditPost.objects.get(id=post_id)
     post.delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/')) 
+    return HttpResponseRedirect('/r/all/') 
 
 def post_form_view(request, sub_id):
     if request.method == 'POST':

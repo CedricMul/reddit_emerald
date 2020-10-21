@@ -38,7 +38,9 @@
         | <a href="/u/{{ p.user_posted }}/"> {{ p.user_posted }} </a>
     </h4>
     <h4 class="card-title text-primary"><a href="/post/{{ p.id }}/"> {{ p.title }}</a></h4>
+    {% if p.url %}
     <p class="card-text"><a href={{p.url}}>{{ p.url }}</a></p>
+    {% endif %}
 	<p class="card-text">{{ p.content }}</p>
 	<a href="/upvote/post/{{ p.id }}/" class="btn btn-primary mt-auto">Upvote</a>
     <br>
