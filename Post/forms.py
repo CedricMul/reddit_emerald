@@ -9,6 +9,7 @@ class PostForm(ModelForm):
             'users_voted',
             'sub',
             'votes',
+            'subreddit_parent',
             'dt_time'
         ]
 
